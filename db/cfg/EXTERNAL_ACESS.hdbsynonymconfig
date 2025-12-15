@@ -1,7 +1,7 @@
 {
-"PRODUCT":{
+"CONSUMERNAMESPACE_PRODUCT":{
     "target": {
-        "object": "CONSUMERNAMEPSACE_PRODUCT",
+        "object": "PRODUCERNAMESPACE_PRODUCT",
          "schema.configure":"CrossHDIContainerProducer-db/schema"
     }
 }

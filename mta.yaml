@@ -1,59 +1,107 @@
 _schema-version: 3.3.0
 ID: CrossHdiContainerConsumer
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
+modules:
+- name: CrossHdiContainerConsumer-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: CrossHdiContainerConsumer-db
+  - name: uaa_CrossHdiContainerConsumer
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: CrossHdiContainerConsumer-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: CrossHdiContainerConsumer-db
+    properties:
+      TARGET_CONTAINER: ~{hdi-service-name}
+  - name: CrossHDIContainerProducer-db
+    group: SERVICE_REPLACEMENTS
+    properties:
+      key: CrossHDIContainerProducer-db
+      service: ~{CrossHDIContainerProducer-db-hdi}
+  parameters:
+    buildpack: nodejs_buildpack
+- name: CrossHdiContainerConsumer-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: CrossHdiContainerConsumer-destination-service
+    parameters:
+      content-target: true
+  - name: CrossHdiContainerConsumer_html_repo_host
+    parameters:
+      service-key:
+        name: CrossHdiContainerConsumer_html_repo_host-key
+  - name: uaa_CrossHdiContainerConsumer
+    parameters:
+      service-key:
+        name: uaa_CrossHdiContainerConsumer-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: ZBSAOO_CrossHdiContainerConsumer_html_repo_host
+          ServiceInstanceName: CrossHdiContainerConsumer-html5-app-host-service
+          ServiceKeyName: CrossHdiContainerConsumer_html_repo_host-key
+          sap.cloud.service: ZBSAOO
+        - Authentication: OAuth2UserTokenExchange
+          Name: ZBSAOO_uaa_CrossHdiContainerConsumer
+          ServiceInstanceName: uaa_CrossHdiContainerConsumer
+          ServiceKeyName: uaa_CrossHdiContainerConsumer-key
+          sap.cloud.service: ZBSAOO
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: CrossHdiContainerConsumer-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+  properties:
+    hdi-service-name: ${service-name}
+- name: CrossHDIContainerProducer-db
+  type: org.cloudfoundry.existing-service
+  parameters:
+    service-name: CrossHDIContainerProducer-db
+  properties:
+    CrossHDIContainerProducer-db-hdi: ${service-name}
+- name: CrossHdiContainerConsumer-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: CrossHdiContainerConsumer-destination-service
+    service-plan: lite
+- name: CrossHdiContainerConsumer_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: CrossHdiContainerConsumer-html5-app-host-service
+    service-plan: app-host
+- name: uaa_CrossHdiContainerConsumer
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
 parameters:
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
-modules:
-  - name: CrossHdiContainerConsumer-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      instances: 1
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: CrossHdiContainerConsumer-db
-
-  - name: CrossHdiContainerConsumer-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: CrossHdiContainerConsumer-db
-        properties:
-          TARGET_CONTAINER: ~{hdi-service-name}
-      - name: CrossHDIContainerProducer-db
-        group: SERVICE_REPLACEMENTS
-        properties:
-          key: CrossHDIContainerProducer-db
-          service: ~{CrossHDIContainerProducer-db-hdi}
-
-
-resources:
-  - name: CrossHdiContainerConsumer-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-    properties:
-      hdi-service-name: ${service-name}
-  - name: CrossHDIContainerProducer-db
-    type: org.cloudfoundry.existing-service
-    parameters:
-       service-name: CrossHDIContainerProducer-db
-    properties:
-       CrossHDIContainerProducer-db-hdi: ${service-name}
-  
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

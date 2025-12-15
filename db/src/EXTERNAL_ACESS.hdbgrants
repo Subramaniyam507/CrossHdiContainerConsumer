@@ -1,13 +1,11 @@
 {
-    "CrossHDIContainerProducer-db":{
+	"CrossHDIContainerProducer-db": {
+		"application_user": {
 
-               "object_owner": {
-                "container_roles":["EXTERNAL_ACESS_READ_G#"]
-               },
-               
-               "application_user": {
-                "container_roles":["EXTERNAL_ACESS_READ"]
-               }
-               }
-    
+			"container_roles": ["EXTERNAL_ACESS_READ"]
+		},
+		"object_owner": {
+			"container_roles": ["EXTERNAL_ACESS_READ_G#"]
+		}
+	}
 }
