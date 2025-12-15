@@ -1,0 +1,8 @@
+{
+"PRODUCT":{
+    "target": {
+        "object": "CONSUMERNAMEPSACE_PRODUCT",
+         "schema.configure":"CrossHDIContainerProducer-db/schema"
+    }
+}
+}
