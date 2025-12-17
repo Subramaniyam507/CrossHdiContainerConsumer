@@ -13,7 +13,10 @@
     "@sap/cds-dk": "^9"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+     "en-ssh": "cf enable-ssh CrossHdiContainerConsumer-srv && cf restart CrossHdiContainerConsumer-srv",
+     "ssh":"cf ssh CrossHdiContainerConsumer-srv",
+     "sshpor":"cf ssh -N -L  9229:127.0.0.1:9229 CrossHdiContainerConsumer-srv"
   },
   "private": true,
   "cds": {}

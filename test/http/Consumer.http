@@ -1,0 +1,44 @@
+@server=http://localhost:4004
+@username=alice
+@password=
+
+
+### Product
+# @name Product_GET
+GET {{server}}/odata/v4/consumer/Product
+Authorization: Basic {{username}}:{{password}}
+
+
+### Product
+# @name Product_POST
+POST {{server}}/odata/v4/consumer/Product
+Content-Type: application/json
+
+
+{
+  "ID": 26,
+  "name": "name-2325625",
+  "description": "description-2325625",
+  "price": 11360295.34
+}
+
+
+### Product
+# @name Product_PATCH
+PATCH {{server}}/odata/v4/consumer/Product/2325625
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "ID": 2325625,
+  "name": "name-2325625",
+  "description": "description-2325625",
+  "price": 11360295.34
+}
+
+
+### Product
+# @name Product_DELETE
+DELETE {{server}}/odata/v4/consumer/Product/2325625
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
