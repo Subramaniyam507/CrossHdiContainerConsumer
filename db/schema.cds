@@ -8,3 +8,11 @@ entity Product {
   description: String;
   price: Decimal(10, 2);
 }
+@cds.persistence.exists
+entity Orders{
+  key ID: Integer;
+  productID: Integer;
+  quantity: Integer;
+  orderDate: DateTime;
+}
+

@@ -4,5 +4,11 @@
         "object": "PRODUCERNAMESPACE_PRODUCT",
          "schema.configure":"CrossHDIContainerProducer-db/schema"
     }
+},
+"CONSUMERNAMESPACE_ORDERS":{
+    "target": {
+        "object": "PRODUCERNAMESPACE_ORDERS",
+         "schema.configure":"CrossHDIContainerProducer-db/schema"
+    }
 }
 }

@@ -3,4 +3,5 @@ service Consumer{
   
   
  entity Product as projection on consumernamespace.Product;
+ entity Orders as projection on consumernamespace.Orders;
 }

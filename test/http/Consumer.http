@@ -6,7 +6,7 @@
 ### Product
 # @name Product_GET
 GET {{server}}/odata/v4/consumer/Product
-Authorization: Basic {{username}}:{{password}}
+
 
 
 ### Product
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 
 {
-  "ID": 26,
+  "ID": 3112,
   "name": "name-2325625",
   "description": "description-2325625",
   "price": 11360295.34
